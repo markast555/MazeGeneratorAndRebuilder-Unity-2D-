@@ -12,36 +12,54 @@ namespace MazeSystem.Core
         public int TilemapCols { get; }
         
         // Минимальные и максимальные значение размера сетки
-        private const int MinTilemapRows = 5;
-        private const int MaxTilemapRows = 100;
-        private const int MinTilemapCols = 5;
-        private const int MaxTilemapCols = 100;
+        public const int MinTilemapRows = 5;
+        public const int MaxTilemapRows = 100;
+        public const int MinTilemapCols = 5;
+        public const int MaxTilemapCols = 100;
         
-        // Размер лабиринта
-        public int MazeRows { get; }
-        public int MazeCols { get; }
+        // Размер сетки по умолчанию
+        public const int DefaultTilemapRows = 14;
+        public const int DefaultTilemapCols = 14;
         
-        // Минимальные значения размера лабиринта
-        private const int MinMazeRows = 5;
-        private const int MinMazeCols = 5;
         
         // Начальная позиция лабиринта на сетке
         public int MazeStartRow { get; }
         public int MazeStartCol { get; }
         
         // Минимальные значения начальных позиций лабирината на сетке
-        private const int MinMazeStartRow = 0;
-        private const int MinMazeStartCol = 0;
+        public const int MinMazeStartRow = 0;
+        public const int MinMazeStartCol = 0;
+        
+        // Начальная позиция лабиринта на сетке по умолчанию
+        public const int DefaultMazeStartRow = 2;
+        public const int DefaultMazeStartCol = 2;
+        
+        
+        // Размер лабиринта
+        public int MazeRows { get; }
+        public int MazeCols { get; }
+        
+        // Минимальные значения размера лабиринта
+        public const int MinMazeRows = MinTilemapRows;
+        public const int MinMazeCols = MinTilemapCols;
+        
+        // Размер лабиринта по умолчанию
+        public const int DefaultMazeRows = 10;
+        public const int DefaultMazeCols = 10;
+        
 
         // Радиус безопасной зоны (квадрат)
         public int SafeZoneSquareRadius { get; }
         
         // Минимальное и максимальное значение радиуса безопасной зоны
-        private const int MinSafeZoneSquareRadius = 1;
-        private const int MaxSafeZoneSquareRadius = 10;
+        public const int MinSafeZoneSquareRadius = 1;
+        public const int MaxSafeZoneSquareRadius = 10;
+        
+        // Радиус безопасной зоны (квадрат) по умолчанию
+        public const int DefaultSafeZoneSquareRadius = 2;
         
         // Коэффициент для определения радиуса безопасной зоны
-        private const float SafeZoneFactor = 0.2f;
+        public const float SafeZoneFactor = 0.2f;
 
         public MazeSettings(
             int tilemapRows,
@@ -82,7 +100,8 @@ namespace MazeSystem.Core
 
             int maxAllowedRadius = Math.Min(
                 MaxSafeZoneSquareRadius, 
-                (int)(MathF.Min(mazeRows, mazeCols) * SafeZoneFactor));
+                Math.Max(MinSafeZoneSquareRadius, 
+                    (int)(Math.Min(mazeRows, mazeCols) * SafeZoneFactor)));
             
             if (safeZoneSquareRadius > maxAllowedRadius || safeZoneSquareRadius < MinSafeZoneSquareRadius)
                 throw new ArgumentOutOfRangeException(nameof(safeZoneSquareRadius),
