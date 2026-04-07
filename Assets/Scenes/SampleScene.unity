@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bc79a46b884a45b7aab8edca0a6dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemapRows: 37
+  tilemapRows: 14
   tilemapCols: 14
   mazeStartRow: 2
   mazeStartCol: 2

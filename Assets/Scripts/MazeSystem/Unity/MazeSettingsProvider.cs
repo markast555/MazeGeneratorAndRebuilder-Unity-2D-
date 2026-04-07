@@ -12,29 +12,18 @@ namespace MazeSystem.Unity
     public class MazeSettingsProvider : MonoBehaviour
     {
         // Размер сетки
-        [Header("Tilemap")]
-        [Min(MazeSettings.MinTilemapRows)] 
         public int tilemapRows = MazeSettings.DefaultTilemapRows;
-        [Min(MazeSettings.MinTilemapCols)] 
         public int tilemapCols = MazeSettings.DefaultTilemapCols;
         
         // Начальная позиция лабиринта на сетке
-        [Header("Maze Start Position")]
-        [Min(MazeSettings.MinMazeStartRow)] 
         public int mazeStartRow = MazeSettings.DefaultMazeStartRow;
-        [Min(MazeSettings.MinMazeStartCol)] 
         public int mazeStartCol = MazeSettings.DefaultMazeStartCol;
 
         // Размер лабиринта
-        [Header("Maze Size")]
-        [Min(MazeSettings.MinMazeRows)] 
         public int mazeRows = MazeSettings.DefaultMazeRows;
-        [Min(MazeSettings.MinMazeCols)] 
         public int mazeCols = MazeSettings.DefaultMazeCols;
         
         // Радиус безопасной зоны (квадрат)
-        [Header("Safe Zone")]
-        [Min(MazeSettings.MinSafeZoneSquareRadius)] 
         public int safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
 
         /// <summary>
