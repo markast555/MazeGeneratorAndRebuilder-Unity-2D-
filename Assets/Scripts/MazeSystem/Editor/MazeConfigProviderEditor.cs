@@ -6,7 +6,7 @@ using MazeSystem.Core;
 namespace MazeSystem.Editor
 {
     /// <summary>
-    /// Кастомный Inspector для <see cref="MazeSettingsProvider"/>.
+    /// Кастомный Inspector для <see cref="MazeConfigProvider"/>.
     /// Позволяет:
     /// - задавать значения с учётом ограничений (min/max)
     /// - автоматически ограничивать ввод (Clamp)
@@ -14,9 +14,9 @@ namespace MazeSystem.Editor
     /// - сбрасывать все параметры одной кнопкой (Reset All)
     /// - визуально отключать кнопки, если значения уже равны дефолтным
     /// </summary>
-    [CustomEditor(typeof(MazeSettingsProvider))]
+    [CustomEditor(typeof(MazeConfigProvider))]
     [CanEditMultipleObjects]
-    public class MazeSettingsProviderEditor : UnityEditor.Editor
+    public class MazeConfigProviderEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

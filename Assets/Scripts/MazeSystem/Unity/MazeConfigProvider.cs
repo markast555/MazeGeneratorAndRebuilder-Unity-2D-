@@ -5,11 +5,11 @@ using MazeSystem.Core;
 namespace MazeSystem.Unity
 {
     /// <summary>
-    /// Класс-проводник с классом MazeSettings,
-    /// задающий значения по умолчанию
-    /// с возможностью их изменения в Inspector
+    /// Unity-компонент, который хранит и предоставляет
+    /// конфигурацию параметров генерации.
+    /// Значения задаются через Inspector и преобразуются в runtime-конфиг.
     /// </summary>
-    public class MazeSettingsProvider : MonoBehaviour
+    public class MazeConfigProvider : MonoBehaviour
     {
         // Размер сетки
         // public int tilemapRows = MazeSettings.DefaultTilemapRows;
