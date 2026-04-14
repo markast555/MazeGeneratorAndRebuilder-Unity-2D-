@@ -45,10 +45,10 @@ namespace MazeSystem.Core
                     var current = maze.GetCell(i, j);
 
                     if (i > 0)
-                        current.Neighbors[BorderSide.Top] = maze.GetCell(i - 1, j);
+                        current.Neighbors[BorderSide.Bottom] = maze.GetCell(i - 1, j);
 
                     if (i < maze.Rows - 1)
-                        current.Neighbors[BorderSide.Bottom] = maze.GetCell(i + 1, j);
+                        current.Neighbors[BorderSide.Top] = maze.GetCell(i + 1, j);
 
                     if (j > 0)
                         current.Neighbors[BorderSide.Left] = maze.GetCell(i, j - 1);

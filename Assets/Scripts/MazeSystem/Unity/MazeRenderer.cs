@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MazeSystem.Core;
+using MazeSystem.Generation;
+using UnityEngine.Serialization;
 
 namespace MazeSystem.Unity
 {
     /// <summary>
     /// Отвечает за создание и управление визуальным представлением лабиринта
     /// </summary>
-    public class MazeRenderer : MonoBehaviour
+    public class MazeRenderer : MonoBehaviour, IMazeGeneratorListener
     {
+        [FormerlySerializedAs("settingsProvider")]
         [Header("Settings")]
-        [SerializeField] private MazeSettingsProvider settingsProvider;
+        [SerializeField] private MazeConfigProvider configProvider;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject floorPrefab;
@@ -19,15 +22,30 @@ namespace MazeSystem.Unity
 
         [Header("Config")]
         [SerializeField] private float cellSize = 1f;
+        [SerializeField] private float wallThickness = 0.1f;
+        [SerializeField] private float wallLength = 1.1f;
+        
+        public float CellSize => cellSize;
         
         [Header("BuildMode")]
-        [SerializeField] private BuildMode buildMode;
-        [SerializeField] private float delay = 0.1f;
+        [SerializeField] private RenderMode buildMode;
+        [SerializeField] private float buildDelay = 0.1f;
+        
+        [Header("GenerationMode")]
+        [SerializeField] private RenderMode generationMode;
+        [SerializeField] private float generationDelay = 0.1f;
 
         private Maze _maze;
         private Dictionary<Cell, CellViewData> _view = new();
         
         private Coroutine _buildCoroutine;
+        
+        private IMazeGenerator _generator;
+
+        private void Awake()
+        {
+            _generator = new GrowingTreeGenerator();
+        }
 
         #region Build
 
@@ -43,14 +61,26 @@ namespace MazeSystem.Unity
 
             switch (buildMode)
             {
-                case BuildMode.Instant:
+                case RenderMode.Instant:
                     BuildInstant();
                     break;
 
-                case BuildMode.WithDelay:
+                case RenderMode.Animated:
                     _buildCoroutine = StartCoroutine(BuildCoroutine());
                     break;
             }
+
+            switch (generationMode)
+            {
+                case RenderMode.Instant:
+                    _generator.Generate(_maze, this);
+                    break;
+
+                case RenderMode.Animated:
+                    StartCoroutine(_generator.GenerateAnimated(_maze, this, generationDelay));
+                    break;
+            }
+            
         }
         
         /// <summary>
@@ -60,7 +90,7 @@ namespace MazeSystem.Unity
         {
             Clear();
 
-            var settings = settingsProvider.GetSettings();
+            var settings = configProvider.GetSettings();
 
             _maze = new Maze(settings.MazeRows, settings.MazeCols);
             MazeBuilder.InitMaze(_maze);
@@ -88,7 +118,7 @@ namespace MazeSystem.Unity
             {
                 CreateFloor(cell);
 
-                yield return new WaitForSeconds(delay);
+                yield return new WaitForSeconds(buildDelay);
             }
             
             foreach (var cell in _maze.AllCells())
@@ -96,7 +126,7 @@ namespace MazeSystem.Unity
                 CreateWall(cell, BorderSide.Top);
                 CreateWall(cell, BorderSide.Right);
 
-                yield return new WaitForSeconds(delay);
+                yield return new WaitForSeconds(buildDelay);
             }
 
             CreateOuterBorders();
@@ -138,6 +168,8 @@ namespace MazeSystem.Unity
 
             var floor = Instantiate(floorPrefab, pos, Quaternion.identity, transform);
 
+            floor.transform.localScale = new Vector3(cellSize, cellSize, 1f);
+
             _view[cell].Floor = floor;
         }
 
@@ -166,25 +198,28 @@ namespace MazeSystem.Unity
 
             Vector3 basePos = GetWorldPosition(cell);
             Vector3 wallPos = basePos;
-            Quaternion rot = Quaternion.identity;
+            
+            var wall = Instantiate(wallPrefab, basePos, Quaternion.identity, transform);
 
             switch (side)
             {
                 case BorderSide.Right:
                     wallPos += new Vector3(cellSize / 2f, 0, 0);
+                    wall.transform.localScale = new Vector3(wallThickness, cellSize * wallLength, 1f);
                     break;
 
                 case BorderSide.Top:
                     wallPos += new Vector3(0, cellSize / 2f, 0);
-                    rot = Quaternion.Euler(0, 0, 90);
+                    wall.transform.localScale = new Vector3(cellSize * wallLength, wallThickness, 1f);
                     break;
 
                 default:
+                    Destroy(wall);
                     return;
             }
 
-            var wall = Instantiate(wallPrefab, wallPos, rot, transform);
-
+            wall.transform.position = wallPos;
+            
             // текущая ячейка
             _view[cell].Walls[side] = wall;
 
@@ -210,9 +245,11 @@ namespace MazeSystem.Unity
                 var cell = _maze.GetCell(0, col);
 
                 Vector3 pos = GetWorldPosition(cell) + new Vector3(0, -cellSize / 2f, 0);
-
-                var wall = Instantiate(wallPrefab, pos, Quaternion.Euler(0, 0, 90), transform);
-
+                
+                var wall = Instantiate(wallPrefab, pos, Quaternion.identity, transform);
+                
+                wall.transform.localScale = new Vector3(cellSize * wallLength, wallThickness, 1f);
+                
                 _view[cell].Walls[BorderSide.Bottom] = wall;
             }
 
@@ -222,9 +259,11 @@ namespace MazeSystem.Unity
                 var cell = _maze.GetCell(row, 0);
 
                 Vector3 pos = GetWorldPosition(cell) + new Vector3(-cellSize / 2f, 0, 0);
-
+                
                 var wall = Instantiate(wallPrefab, pos, Quaternion.identity, transform);
-
+                
+                wall.transform.localScale = new Vector3(wallThickness, cellSize * wallLength, 1f);
+                
                 _view[cell].Walls[BorderSide.Left] = wall;
             }
         }
@@ -260,8 +299,11 @@ namespace MazeSystem.Unity
         public void SetFloorColor(Cell cell, Color color)
         {
             var spriteRenderer = _view[cell].Floor.GetComponent<SpriteRenderer>();
+
             if (spriteRenderer != null)
+            {
                 spriteRenderer.color = color;
+            }
         }
 
         #endregion
@@ -296,5 +338,16 @@ namespace MazeSystem.Unity
         }
 
         #endregion
+        
+        public void OnWallRemoved(Cell cell, BorderSide side)
+        {
+            RemoveWall(cell, side);
+        }
+
+        public void OnFloorRepaint(Cell cell, Color color)
+        {
+            SetFloorColor(cell, color);
+        }
+        
     }
 }
