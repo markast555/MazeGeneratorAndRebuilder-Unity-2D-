@@ -1,8 +1,8 @@
 namespace MazeSystem.Unity
 {
-    public enum BuildMode
+    public enum RenderMode
     {
         Instant,
-        WithDelay
+        Animated
     }
 }

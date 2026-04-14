@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsProvider: {fileID: 25837699}
-  grid: {fileID: 589330194}
+  rendererMaze: {fileID: 25837701}
 --- !u!114 &25837699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +175,7 @@ Transform:
   m_GameObject: {fileID: 25837697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: -4, z: 0}
+  m_LocalPosition: {x: -5.76, y: -3.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -197,8 +197,12 @@ MonoBehaviour:
   floorPrefab: {fileID: 5342985144046007392, guid: 063eef645758a484ba18e8eb2e94bb36, type: 3}
   wallPrefab: {fileID: 3989160804489926345, guid: 1319dae128ddd0f44986ca3e056c4216, type: 3}
   cellSize: 1
+  wallThickness: 0.1
+  wallLength: 1.1
   buildMode: 0
-  delay: 1
+  buildDelay: 0.1
+  generationMode: 0
+  generationDelay: 3
 --- !u!1 &127960418
 GameObject:
   m_ObjectHideFlags: 0

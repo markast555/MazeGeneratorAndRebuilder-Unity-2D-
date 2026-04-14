@@ -1,5 +1,5 @@
 using UnityEngine;
-using MazeSystem.Core;
+using UnityEngine.Serialization;
 
 namespace MazeSystem.Unity
 {
@@ -8,26 +8,29 @@ namespace MazeSystem.Unity
     /// </summary>
     public class MazeBoundsGizmo : MonoBehaviour
     {
-        [SerializeField] private MazeSettingsProvider settingsProvider;
-        [SerializeField] private Grid grid;
+        [FormerlySerializedAs("settingsProvider")] [SerializeField] private MazeConfigProvider configProvider;
+        [FormerlySerializedAs("renderer")] [SerializeField] private MazeRenderer rendererMaze;
+        // [SerializeField] private Grid grid;
 
         private void OnDrawGizmos()
         {
-            if (settingsProvider == null) return;
+            if (configProvider == null || rendererMaze == null) return;
             
             // Привязка к сетке
-            Vector3Int cellPos = grid.WorldToCell(transform.position);
-            Vector3 snappedPosition = grid.CellToWorld(cellPos);
+            //Vector3Int cellPos = grid.WorldToCell(transform.position);
+            // Vector3 snappedPosition = grid.CellToWorld(cellPos);
             
-            transform.position = snappedPosition;
+            // transform.position = snappedPosition;
 
-            var settings = settingsProvider.GetSettings();
+            var settings = configProvider.GetSettings();
 
             Gizmos.color = Color.green;
 
+            float cellSize = rendererMaze.CellSize;
+            
             // Размер лабиринта (в клетках)
-            float width = settings.MazeCols;
-            float height = settings.MazeRows;
+            float width = settings.MazeCols * cellSize;
+            float height = settings.MazeRows * cellSize;
 
             // Центр куба (чтобы он рисовался от transform.position)
             Vector3 center = transform.position + new Vector3(width / 2f, height / 2f, 0);
