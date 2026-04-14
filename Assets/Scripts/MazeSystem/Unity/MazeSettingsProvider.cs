@@ -12,34 +12,34 @@ namespace MazeSystem.Unity
     public class MazeSettingsProvider : MonoBehaviour
     {
         // Размер сетки
-        public int tilemapRows = MazeSettings.DefaultTilemapRows;
-        public int tilemapCols = MazeSettings.DefaultTilemapCols;
-        
-        // Начальная позиция лабиринта на сетке
-        public int mazeStartRow = MazeSettings.DefaultMazeStartRow;
-        public int mazeStartCol = MazeSettings.DefaultMazeStartCol;
+        // public int tilemapRows = MazeSettings.DefaultTilemapRows;
+        // public int tilemapCols = MazeSettings.DefaultTilemapCols;
+        //
+        // // Начальная позиция лабиринта на сетке
+        // public int mazeStartRow = MazeSettings.DefaultMazeStartRow;
+        // public int mazeStartCol = MazeSettings.DefaultMazeStartCol;
 
         // Размер лабиринта
         public int mazeRows = MazeSettings.DefaultMazeRows;
         public int mazeCols = MazeSettings.DefaultMazeCols;
         
         // Радиус безопасной зоны (квадрат)
-        public int safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
+        // public int safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
 
         /// <summary>
         /// Создаёт объект настроек лабиринта на основе значений из Inspector.
         /// </summary>
         /// <returns>Экземпляр <see cref="MazeSettings"/> с валидированными параметрами.</returns>
-        public MazeSettings CreateSettings()
+        public MazeSettings GetSettings()
         {
             return new MazeSettings(
-                tilemapRows,
-                tilemapCols,
+                // tilemapRows,
+                // tilemapCols,
                 mazeRows,
-                mazeCols,
-                mazeStartRow,
-                mazeStartCol,
-                safeZoneSquareRadius
+                mazeCols
+                // mazeStartRow,
+                // mazeStartCol,
+                // safeZoneSquareRadius
             );
         }
         
@@ -48,58 +48,58 @@ namespace MazeSystem.Unity
         /// </summary>
         public void OnValidate()
         {
-            tilemapRows = Mathf.Clamp(
-                tilemapRows, MazeSettings.MinTilemapRows, 
-                MazeSettings.MaxTilemapRows);
-            
-            tilemapCols = Mathf.Clamp(
-                tilemapCols, 
-                MazeSettings.MinTilemapCols, 
-                MazeSettings.MaxTilemapCols);
-            
-            mazeStartRow = Mathf.Clamp(
-                mazeStartRow,
-                MazeSettings.MinMazeStartRow,
-                tilemapRows -  MazeSettings.MinMazeRows);
-            
-            mazeStartCol = Mathf.Clamp(
-                mazeStartCol,
-                MazeSettings.MinMazeStartCol,
-                tilemapCols -  MazeSettings.MinMazeCols);
+            // tilemapRows = Mathf.Clamp(
+            //     tilemapRows, MazeSettings.MinTilemapRows, 
+            //     MazeSettings.MaxTilemapRows);
+            //
+            // tilemapCols = Mathf.Clamp(
+            //     tilemapCols, 
+            //     MazeSettings.MinTilemapCols, 
+            //     MazeSettings.MaxTilemapCols);
+            //
+            // mazeStartRow = Mathf.Clamp(
+            //     mazeStartRow,
+            //     MazeSettings.MinMazeStartRow,
+            //     tilemapRows -  MazeSettings.MinMazeRows);
+            //
+            // mazeStartCol = Mathf.Clamp(
+            //     mazeStartCol,
+            //     MazeSettings.MinMazeStartCol,
+            //     tilemapCols -  MazeSettings.MinMazeCols);
             
             mazeRows = Mathf.Clamp(
                 mazeRows, 
                 MazeSettings.MinMazeRows, 
-                tilemapRows - mazeStartRow);
+                MazeSettings.MaxMazeRows);
             
             mazeCols = Mathf.Clamp(
                 mazeCols,
                 MazeSettings.MinMazeCols, 
-                tilemapCols - mazeStartCol);
+                MazeSettings.MaxMazeCols);
             
-            int maxAllowedRadius = Mathf.Min(
-                MazeSettings.MaxSafeZoneSquareRadius, 
-                Mathf.Max(MazeSettings.MinSafeZoneSquareRadius, 
-                    (int)(Mathf.Min(mazeRows, mazeCols) * MazeSettings.SafeZoneFactor)));
-            
-            safeZoneSquareRadius = Mathf.Clamp(
-                safeZoneSquareRadius,
-                MazeSettings.MinSafeZoneSquareRadius,
-                maxAllowedRadius);
+            // int maxAllowedRadius = Mathf.Min(
+            //     MazeSettings.MaxSafeZoneSquareRadius, 
+            //     Mathf.Max(MazeSettings.MinSafeZoneSquareRadius, 
+            //         (int)(Mathf.Min(mazeRows, mazeCols) * MazeSettings.SafeZoneFactor)));
+            //
+            // safeZoneSquareRadius = Mathf.Clamp(
+            //     safeZoneSquareRadius,
+            //     MazeSettings.MinSafeZoneSquareRadius,
+            //     maxAllowedRadius);
         }
         
         public void ResetToDefault()
         {
-            tilemapRows = MazeSettings.DefaultTilemapRows;
-            tilemapCols = MazeSettings.DefaultTilemapCols;
-
-            mazeStartRow = MazeSettings.DefaultMazeStartRow;
-            mazeStartCol = MazeSettings.DefaultMazeStartCol;
+            // tilemapRows = MazeSettings.DefaultTilemapRows;
+            // tilemapCols = MazeSettings.DefaultTilemapCols;
+            //
+            // mazeStartRow = MazeSettings.DefaultMazeStartRow;
+            // mazeStartCol = MazeSettings.DefaultMazeStartCol;
 
             mazeRows = MazeSettings.DefaultMazeRows;
             mazeCols = MazeSettings.DefaultMazeCols;
 
-            safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
+            // safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
         }
     }
 }

@@ -25,7 +25,9 @@ namespace MazeSystem.Core
             {
                 for (int j = 0; j < maze.Cols; j++)
                 {
-                    maze.SetCell(i, j, new Cell(i, j));
+                    Cell cell = new Cell(i, j);
+                    maze.SetCell(i, j, cell);
+                    cell.AddWall(BorderSide.All);
                 }
             }
         }

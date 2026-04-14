@@ -24,106 +24,106 @@ namespace MazeSystem.Editor
             serializedObject.Update();
             
             // ===== Tilemap =====
-            EditorGUILayout.LabelField("Tilemap", EditorStyles.boldLabel);
-            DrawIntField("tilemapRows", "Rows",
-                MazeSettings.MinTilemapRows,
-                MazeSettings.MaxTilemapRows,
-                MazeSettings.DefaultTilemapRows);
+            // EditorGUILayout.LabelField("Tilemap", EditorStyles.boldLabel);
+            // DrawIntField("tilemapRows", "Rows",
+            //     MazeSettings.MinTilemapRows,
+            //     MazeSettings.MaxTilemapRows,
+            //     MazeSettings.DefaultTilemapRows);
+            //
+            // DrawIntField("tilemapCols", "Cols",
+            //     MazeSettings.MinTilemapCols,
+            //     MazeSettings.MaxTilemapCols,
+            //     MazeSettings.DefaultTilemapCols);
 
-            DrawIntField("tilemapCols", "Cols",
-                MazeSettings.MinTilemapCols,
-                MazeSettings.MaxTilemapCols,
-                MazeSettings.DefaultTilemapCols);
-
-            EditorGUILayout.Space();
+            // EditorGUILayout.Space();
 
             // Получение текущих значений для зависимых ограничений
-            int tilemapRows = GetInt("tilemapRows");
-            int tilemapCols = GetInt("tilemapCols");
+            // int tilemapRows = GetInt("tilemapRows");
+            // int tilemapCols = GetInt("tilemapCols");
 
             // ===== Maze Start Position =====
-            EditorGUILayout.LabelField("Maze Start Position", EditorStyles.boldLabel);
-            DrawIntField("mazeStartRow", "Start Row",
-                MazeSettings.MinMazeStartRow,
-                tilemapRows - MazeSettings.MinMazeRows,
-                MazeSettings.DefaultMazeStartRow);
-
-            DrawIntField("mazeStartCol", "Start Col",
-                MazeSettings.MinMazeStartCol,
-                tilemapCols - MazeSettings.MinMazeCols,
-                MazeSettings.DefaultMazeStartCol);
-
-            EditorGUILayout.Space();
+            // EditorGUILayout.LabelField("Maze Start Position", EditorStyles.boldLabel);
+            // DrawIntField("mazeStartRow", "Start Row",
+            //     MazeSettings.MinMazeStartRow,
+            //     tilemapRows - MazeSettings.MinMazeRows,
+            //     MazeSettings.DefaultMazeStartRow);
+            //
+            // DrawIntField("mazeStartCol", "Start Col",
+            //     MazeSettings.MinMazeStartCol,
+            //     tilemapCols - MazeSettings.MinMazeCols,
+            //     MazeSettings.DefaultMazeStartCol);
+            //
+            // EditorGUILayout.Space();
 
             // Получение текущих значений для зависимых ограничений
-            int mazeStartRow = GetInt("mazeStartRow");
-            int mazeStartCol = GetInt("mazeStartCol");
+            // int mazeStartRow = GetInt("mazeStartRow");
+            // int mazeStartCol = GetInt("mazeStartCol");
 
             // ===== Maze Size =====
             EditorGUILayout.LabelField("Maze Size", EditorStyles.boldLabel);
             DrawIntField("mazeRows", "Maze Rows",
                 MazeSettings.MinMazeRows,
-                tilemapRows - mazeStartRow,
+                MazeSettings.MaxMazeRows,
                 MazeSettings.DefaultMazeRows);
 
             DrawIntField("mazeCols", "Maze Cols",
                 MazeSettings.MinMazeCols,
-                tilemapCols - mazeStartCol,
+                MazeSettings.MaxMazeCols,
                 MazeSettings.DefaultMazeCols);
 
-            EditorGUILayout.Space();
+            // EditorGUILayout.Space();
             
             // Получение текущих значений для зависимых ограничений
-            int mazeRows = GetInt("mazeRows");
-            int mazeCols = GetInt("mazeCols");
+            // int mazeRows = GetInt("mazeRows");
+            // int mazeCols = GetInt("mazeCols");
 
             // ===== Safe Zone =====
             
             // Вычисление максимально допустимого радиуса safe zone
-            int maxAllowedRadius = Mathf.Min(
-                MazeSettings.MaxSafeZoneSquareRadius,
-                Mathf.Max(
-                    MazeSettings.MinSafeZoneSquareRadius,
-                    (int)(Mathf.Min(mazeRows, mazeCols) * MazeSettings.SafeZoneFactor)
-                )
-            );
-
-            EditorGUILayout.LabelField("Safe Zone", EditorStyles.boldLabel);
-            DrawIntField("safeZoneSquareRadius", "Radius",
-                MazeSettings.MinSafeZoneSquareRadius,
-                maxAllowedRadius,
-                MazeSettings.DefaultSafeZoneSquareRadius);
-
-            EditorGUILayout.Space();
+            // int maxAllowedRadius = Mathf.Min(
+            //     MazeSettings.MaxSafeZoneSquareRadius,
+            //     Mathf.Max(
+            //         MazeSettings.MinSafeZoneSquareRadius,
+            //         (int)(Mathf.Min(mazeRows, mazeCols) * MazeSettings.SafeZoneFactor)
+            //     )
+            // );
+            //
+            // EditorGUILayout.LabelField("Safe Zone", EditorStyles.boldLabel);
+            // DrawIntField("safeZoneSquareRadius", "Radius",
+            //     MazeSettings.MinSafeZoneSquareRadius,
+            //     maxAllowedRadius,
+            //     MazeSettings.DefaultSafeZoneSquareRadius);
+            //
+            // EditorGUILayout.Space();
 
             // ===== Reset All =====
             
             // Проверка, равны ли все значения значениям по умолчанию
-            bool isAllDefault =
-                GetInt("tilemapRows") == MazeSettings.DefaultTilemapRows &&
-                GetInt("tilemapCols") == MazeSettings.DefaultTilemapCols &&
-                GetInt("mazeStartRow") == MazeSettings.DefaultMazeStartRow &&
-                GetInt("mazeStartCol") == MazeSettings.DefaultMazeStartCol &&
-                GetInt("mazeRows") == MazeSettings.DefaultMazeRows &&
-                GetInt("mazeCols") == MazeSettings.DefaultMazeCols &&
-                GetInt("safeZoneSquareRadius") == MazeSettings.DefaultSafeZoneSquareRadius;
-
-            // Кнопка неактивная, если всё уже дефолтное
-            EditorGUI.BeginDisabledGroup(isAllDefault);
-
-            // Деактивация кнопки, если всё уже в дефолтном состоянии
-            if (GUILayout.Button("Reset All"))
-            {
-                foreach (var t in targets)
-                {
-                    var provider = (MazeSettingsProvider)t;
-                    provider.ResetToDefault();
-                    // Сообщение Unity, что объект изменился (важно для сохранения)
-                    EditorUtility.SetDirty(provider);
-                }
-            }
-
-            EditorGUI.EndDisabledGroup();
+            // bool isAllDefault =
+            //     GetInt("tilemapRows") == MazeSettings.DefaultTilemapRows &&
+            //     GetInt("tilemapCols") == MazeSettings.DefaultTilemapCols &&
+            //     GetInt("mazeStartRow") == MazeSettings.DefaultMazeStartRow &&
+            //     GetInt("mazeStartCol") == MazeSettings.DefaultMazeStartCol &&
+            //     GetInt("mazeRows") == MazeSettings.DefaultMazeRows &&
+            //     GetInt("mazeCols") == MazeSettings.DefaultMazeCols &&
+            //     GetInt("safeZoneSquareRadius") == MazeSettings.DefaultSafeZoneSquareRadius;
+            //
+            // // Кнопка неактивная, если всё уже дефолтное
+            // EditorGUI.BeginDisabledGroup(isAllDefault);
+            //
+            // // Деактивация кнопки, если всё уже в дефолтном состоянии
+            // if (GUILayout.Button("Reset All"))
+            // {
+            //     foreach (var t in targets)
+            //     {
+            //         var provider = (MazeSettingsProvider)t;
+            //         provider.ResetToDefault();
+            //         // Сообщение Unity, что объект изменился (важно для сохранения)
+            //         EditorUtility.SetDirty(provider);
+            //     }
+            // }
+            //
+            // EditorGUI.EndDisabledGroup();
 
             // Применение изменения обратно в объект
             serializedObject.ApplyModifiedProperties();
