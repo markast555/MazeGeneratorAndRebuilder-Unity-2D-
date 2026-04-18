@@ -17,6 +17,15 @@ namespace MazeSystem.Generation
         /// </param>
         void Generate(Maze maze, IMazeGeneratorListener listener = null);
         
+        /// <summary>
+        /// Генерирует лабиринт с паузами
+        /// </summary>
+        /// <param name="maze">Модель лабиринта</param>
+        /// <param name="listener">
+        /// Слушатель событий генерации (опционально, для визуализации)
+        /// </param>
+        /// <param name="delay">Время паузы в секундах</param>
+        /// <returns></returns>
         IEnumerator GenerateAnimated(Maze maze, IMazeGeneratorListener listener, float delay);
     }
 }

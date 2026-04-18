@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa50079d4dab4f4c958b1aba0d56bb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsProvider: {fileID: 25837699}
+  configProvider: {fileID: 25837699}
   rendererMaze: {fileID: 25837701}
 --- !u!114 &25837699
 MonoBehaviour:
@@ -166,6 +166,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mazeRows: 5
   mazeCols: 5
+  safeZoneMode: 1
+  squareSafeZoneRadius: 1
+  dynamicSafeZoneDistance: 3
 --- !u!4 &25837700
 Transform:
   m_ObjectHideFlags: 0
@@ -193,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7ce51d792d45898492bd371b1c3db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsProvider: {fileID: 25837699}
+  configProvider: {fileID: 25837699}
   floorPrefab: {fileID: 5342985144046007392, guid: 063eef645758a484ba18e8eb2e94bb36, type: 3}
   wallPrefab: {fileID: 3989160804489926345, guid: 1319dae128ddd0f44986ca3e056c4216, type: 3}
   cellSize: 1
@@ -201,8 +204,8 @@ MonoBehaviour:
   wallLength: 1.1
   buildMode: 0
   buildDelay: 0.1
-  generationMode: 0
-  generationDelay: 3
+  generationMode: 1
+  generationDelay: 0.1
 --- !u!1 &127960418
 GameObject:
   m_ObjectHideFlags: 0

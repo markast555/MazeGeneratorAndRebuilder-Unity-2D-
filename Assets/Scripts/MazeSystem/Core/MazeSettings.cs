@@ -3,7 +3,7 @@ using System;
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Класс значений для настроек лабиринта и сетки.
+    /// Класс значений для настроек лабиринта
     /// </summary>
     public class MazeSettings
     {
@@ -40,9 +40,9 @@ namespace MazeSystem.Core
         public int MazeCols { get; }
         
         // Минимальные и максимальные значения размера лабиринта
-        public const int MinMazeRows = 2;
+        public const int MinMazeRows = 5;
         public const int MaxMazeRows = 500;
-        public const int MinMazeCols = 2;
+        public const int MinMazeCols = 5;
         public const int MaxMazeCols = 500;
         
         // Размер лабиринта по умолчанию

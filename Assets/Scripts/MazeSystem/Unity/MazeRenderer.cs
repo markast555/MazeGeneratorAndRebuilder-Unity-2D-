@@ -12,7 +12,6 @@ namespace MazeSystem.Unity
     /// </summary>
     public class MazeRenderer : MonoBehaviour, IMazeGeneratorListener
     {
-        [FormerlySerializedAs("settingsProvider")]
         [Header("Settings")]
         [SerializeField] private MazeConfigProvider configProvider;
 
@@ -90,7 +89,7 @@ namespace MazeSystem.Unity
         {
             Clear();
 
-            var settings = configProvider.GetSettings();
+            var settings = configProvider.GetMazeSettings();
 
             _maze = new Maze(settings.MazeRows, settings.MazeCols);
             MazeBuilder.InitMaze(_maze);
@@ -339,11 +338,21 @@ namespace MazeSystem.Unity
 
         #endregion
         
+        /// <summary>
+        /// Событие удаления стены
+        /// </summary>
+        /// <param name="cell">Ячейка</param>
+        /// <param name="side">Сторона границы</param>
         public void OnWallRemoved(Cell cell, BorderSide side)
         {
             RemoveWall(cell, side);
         }
 
+        /// <summary>
+        /// Событие перекарски ячейки (пола)
+        /// </summary>
+        /// <param name="cell">Ячейка</param>
+        /// <param name="color">Цвет</param>
         public void OnFloorRepaint(Cell cell, Color color)
         {
             SetFloorColor(cell, color);

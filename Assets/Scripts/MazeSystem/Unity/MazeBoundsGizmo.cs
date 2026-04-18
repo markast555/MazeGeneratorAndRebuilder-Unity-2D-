@@ -8,8 +8,8 @@ namespace MazeSystem.Unity
     /// </summary>
     public class MazeBoundsGizmo : MonoBehaviour
     {
-        [FormerlySerializedAs("settingsProvider")] [SerializeField] private MazeConfigProvider configProvider;
-        [FormerlySerializedAs("renderer")] [SerializeField] private MazeRenderer rendererMaze;
+        [SerializeField] private MazeConfigProvider configProvider;
+        [SerializeField] private MazeRenderer rendererMaze;
         // [SerializeField] private Grid grid;
 
         private void OnDrawGizmos()
@@ -22,7 +22,7 @@ namespace MazeSystem.Unity
             
             // transform.position = snappedPosition;
 
-            var settings = configProvider.GetSettings();
+            var settings = configProvider.GetMazeSettings();
 
             Gizmos.color = Color.green;
 

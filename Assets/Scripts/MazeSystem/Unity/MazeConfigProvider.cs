@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using MazeSystem.Core;
+using UnityEngine.Serialization;
 
 namespace MazeSystem.Unity
 {
@@ -23,14 +24,21 @@ namespace MazeSystem.Unity
         public int mazeRows = MazeSettings.DefaultMazeRows;
         public int mazeCols = MazeSettings.DefaultMazeCols;
         
+        // === SafeZone ===
+        // Режим определения безопасной зоны
+        public SafeZoneMode safeZoneMode = SafeZoneMode.Square;
+        
         // Радиус безопасной зоны (квадрат)
-        // public int safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
+        public int squareSafeZoneRadius = SquareSafeZoneSettings.DefaultRadius;
+        
+        // Расстояние до конца безопасной зоны в ячейках (клетках)
+        public int dynamicSafeZoneDistance = DynamicSafeZoneSettings.DefaultDistance;
 
         /// <summary>
         /// Создаёт объект настроек лабиринта на основе значений из Inspector.
         /// </summary>
         /// <returns>Экземпляр <see cref="MazeSettings"/> с валидированными параметрами.</returns>
-        public MazeSettings GetSettings()
+        public MazeSettings GetMazeSettings()
         {
             return new MazeSettings(
                 // tilemapRows,
@@ -41,6 +49,30 @@ namespace MazeSystem.Unity
                 // mazeStartCol,
                 // safeZoneSquareRadius
             );
+        }
+
+        public ISafeZoneSettings GetSafeZoneSettings()
+        {
+            switch (safeZoneMode)
+            {
+                case SafeZoneMode.Square:
+                    return new SquareSafeZoneSettings(
+                        squareSafeZoneRadius, mazeRows, mazeCols);
+
+                case SafeZoneMode.Dynamic:
+                    return new DynamicSafeZoneSettings(
+                        dynamicSafeZoneDistance, mazeRows, mazeCols);
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        public MazeConfig GetMazeConfig()
+        {
+            return new MazeConfig(
+                GetMazeSettings(),
+                GetSafeZoneSettings());
         }
         
         /// <summary>
@@ -77,15 +109,31 @@ namespace MazeSystem.Unity
                 MazeSettings.MinMazeCols, 
                 MazeSettings.MaxMazeCols);
             
-            // int maxAllowedRadius = Mathf.Min(
-            //     MazeSettings.MaxSafeZoneSquareRadius, 
-            //     Mathf.Max(MazeSettings.MinSafeZoneSquareRadius, 
-            //         (int)(Mathf.Min(mazeRows, mazeCols) * MazeSettings.SafeZoneFactor)));
-            //
-            // safeZoneSquareRadius = Mathf.Clamp(
-            //     safeZoneSquareRadius,
-            //     MazeSettings.MinSafeZoneSquareRadius,
-            //     maxAllowedRadius);
+            int maxAllowedRadius = SafeZoneCalculator.CalculateMax(
+                mazeRows,
+                mazeCols,
+                SquareSafeZoneSettings.MinRadius,
+                SquareSafeZoneSettings.MaxRadius,
+                SquareSafeZoneSettings.RadiusFactor
+            );
+            
+            squareSafeZoneRadius = Mathf.Clamp(
+                squareSafeZoneRadius,
+                SquareSafeZoneSettings.MinRadius,
+                maxAllowedRadius);
+            
+            int maxAllowedDistance = SafeZoneCalculator.CalculateMax(
+                mazeRows,
+                mazeCols,
+                DynamicSafeZoneSettings.MinDistance,
+                DynamicSafeZoneSettings.MaxDistance,
+                DynamicSafeZoneSettings.DistanceFactor
+            );
+            
+            dynamicSafeZoneDistance = Mathf.Clamp(
+                dynamicSafeZoneDistance,
+                DynamicSafeZoneSettings.MinDistance,
+                maxAllowedDistance);
         }
         
         public void ResetToDefault()
@@ -99,7 +147,20 @@ namespace MazeSystem.Unity
             mazeRows = MazeSettings.DefaultMazeRows;
             mazeCols = MazeSettings.DefaultMazeCols;
 
-            // safeZoneSquareRadius = MazeSettings.DefaultSafeZoneSquareRadius;
+            switch (safeZoneMode)
+            {
+                case SafeZoneMode.Square:
+                    squareSafeZoneRadius = SquareSafeZoneSettings.DefaultRadius;
+                    break;
+
+                case SafeZoneMode.Dynamic:
+                    dynamicSafeZoneDistance = DynamicSafeZoneSettings.DefaultDistance;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
         }
     }
 }

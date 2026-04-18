@@ -59,6 +59,7 @@ namespace MazeSystem.Editor
             // int mazeStartRow = GetInt("mazeStartRow");
             // int mazeStartCol = GetInt("mazeStartCol");
 
+            
             // ===== Maze Size =====
             EditorGUILayout.LabelField("Maze Size", EditorStyles.boldLabel);
             DrawIntField("mazeRows", "Maze Rows",
@@ -71,59 +72,95 @@ namespace MazeSystem.Editor
                 MazeSettings.MaxMazeCols,
                 MazeSettings.DefaultMazeCols);
 
-            // EditorGUILayout.Space();
+            EditorGUILayout.Space();
             
             // Получение текущих значений для зависимых ограничений
-            // int mazeRows = GetInt("mazeRows");
-            // int mazeCols = GetInt("mazeCols");
+            int mazeRows = GetInt("mazeRows");
+            int mazeCols = GetInt("mazeCols");
 
+            
             // ===== Safe Zone =====
             
             // Вычисление максимально допустимого радиуса safe zone
-            // int maxAllowedRadius = Mathf.Min(
-            //     MazeSettings.MaxSafeZoneSquareRadius,
-            //     Mathf.Max(
-            //         MazeSettings.MinSafeZoneSquareRadius,
-            //         (int)(Mathf.Min(mazeRows, mazeCols) * MazeSettings.SafeZoneFactor)
-            //     )
-            // );
-            //
-            // EditorGUILayout.LabelField("Safe Zone", EditorStyles.boldLabel);
-            // DrawIntField("safeZoneSquareRadius", "Radius",
-            //     MazeSettings.MinSafeZoneSquareRadius,
-            //     maxAllowedRadius,
-            //     MazeSettings.DefaultSafeZoneSquareRadius);
-            //
-            // EditorGUILayout.Space();
+            int maxAllowedRadius = SafeZoneCalculator.CalculateMax(
+                mazeRows,
+                mazeCols,
+                SquareSafeZoneSettings.MinRadius,
+                SquareSafeZoneSettings.MaxRadius,
+                SquareSafeZoneSettings.RadiusFactor
+            );
+            
+            int maxAllowedDistance = SafeZoneCalculator.CalculateMax(
+                mazeRows,
+                mazeCols,
+                DynamicSafeZoneSettings.MinDistance,
+                DynamicSafeZoneSettings.MaxDistance,
+                DynamicSafeZoneSettings.DistanceFactor
+            );
+            
+            var modeProp = serializedObject.FindProperty("safeZoneMode");
 
+            EditorGUILayout.LabelField("Safe Zone", EditorStyles.boldLabel);
+
+            EditorGUILayout.PropertyField(modeProp, new GUIContent("Mode"));
+
+            var mode = (SafeZoneMode)modeProp.enumValueIndex;
+            
+            switch (mode)
+            {
+                case SafeZoneMode.Square:
+                     DrawIntField("squareSafeZoneRadius", "Radius",
+                         SquareSafeZoneSettings.MinRadius,
+                         maxAllowedRadius,
+                         SquareSafeZoneSettings.DefaultRadius);
+                     break;
+                
+                 case SafeZoneMode.Dynamic:
+                     DrawIntField("dynamicSafeZoneDistance", "Distance",
+                         DynamicSafeZoneSettings.MinDistance,
+                         maxAllowedDistance,
+                         DynamicSafeZoneSettings.DefaultDistance);
+                    break;
+            }
+            
+            EditorGUILayout.Space();
+
+            
             // ===== Reset All =====
             
             // Проверка, равны ли все значения значениям по умолчанию
-            // bool isAllDefault =
-            //     GetInt("tilemapRows") == MazeSettings.DefaultTilemapRows &&
-            //     GetInt("tilemapCols") == MazeSettings.DefaultTilemapCols &&
-            //     GetInt("mazeStartRow") == MazeSettings.DefaultMazeStartRow &&
-            //     GetInt("mazeStartCol") == MazeSettings.DefaultMazeStartCol &&
-            //     GetInt("mazeRows") == MazeSettings.DefaultMazeRows &&
-            //     GetInt("mazeCols") == MazeSettings.DefaultMazeCols &&
-            //     GetInt("safeZoneSquareRadius") == MazeSettings.DefaultSafeZoneSquareRadius;
-            //
-            // // Кнопка неактивная, если всё уже дефолтное
-            // EditorGUI.BeginDisabledGroup(isAllDefault);
-            //
-            // // Деактивация кнопки, если всё уже в дефолтном состоянии
-            // if (GUILayout.Button("Reset All"))
-            // {
-            //     foreach (var t in targets)
-            //     {
-            //         var provider = (MazeSettingsProvider)t;
-            //         provider.ResetToDefault();
-            //         // Сообщение Unity, что объект изменился (важно для сохранения)
-            //         EditorUtility.SetDirty(provider);
-            //     }
-            // }
-            //
-            // EditorGUI.EndDisabledGroup();
+            bool isAllDefault =
+                // GetInt("tilemapRows") == MazeSettings.DefaultTilemapRows &&
+                // GetInt("tilemapCols") == MazeSettings.DefaultTilemapCols &&
+                // GetInt("mazeStartRow") == MazeSettings.DefaultMazeStartRow &&
+                // GetInt("mazeStartCol") == MazeSettings.DefaultMazeStartCol &&
+                GetInt("mazeRows") == MazeSettings.DefaultMazeRows &&
+                GetInt("mazeCols") == MazeSettings.DefaultMazeCols &&
+                (
+                    (mode == SafeZoneMode.Square &&
+                     GetInt("squareSafeZoneRadius") == SquareSafeZoneSettings.DefaultRadius)
+                    ||
+                    (mode == SafeZoneMode.Dynamic &&
+                     GetInt("dynamicSafeZoneDistance") == DynamicSafeZoneSettings.DefaultDistance)
+                );
+            
+            // Кнопка неактивная, если всё уже дефолтное
+            EditorGUI.BeginDisabledGroup(isAllDefault);
+            
+            // Деактивация кнопки, если всё уже в дефолтном состоянии
+            if (GUILayout.Button("Reset All"))
+            {
+                foreach (var t in targets)
+                {
+                    var provider = (MazeConfigProvider)t;
+                    Undo.RecordObject(provider, "Reset Maze Config");
+                    provider.ResetToDefault();
+                    // Сообщение Unity, что объект изменился (важно для сохранения)
+                    EditorUtility.SetDirty(provider);
+                }
+            }
+            
+            EditorGUI.EndDisabledGroup();
 
             // Применение изменения обратно в объект
             serializedObject.ApplyModifiedProperties();
@@ -138,6 +175,12 @@ namespace MazeSystem.Editor
         private void DrawIntField(string propertyName, string label, int min, int max, int defaultValue)
         {
             var prop = serializedObject.FindProperty(propertyName);
+            
+            if (prop == null)
+            {
+                EditorGUILayout.LabelField($"ERROR: {propertyName} not found");
+                return;
+            }
 
             EditorGUILayout.BeginHorizontal();
 
@@ -162,7 +205,15 @@ namespace MazeSystem.Editor
         /// </summary>
         private int GetInt(string propertyName)
         {
-            return serializedObject.FindProperty(propertyName).intValue;
+            var prop = serializedObject.FindProperty(propertyName);
+
+            if (prop == null)
+            {
+                Debug.LogError($"Property '{propertyName}' not found!");
+                return 0;
+            }
+
+            return prop.intValue;
         }
     }
 }
