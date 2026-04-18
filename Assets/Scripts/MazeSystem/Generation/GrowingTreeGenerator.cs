@@ -104,9 +104,9 @@ namespace MazeSystem.Generation
 
                     // модель
                     cell.RemoveWall(side);
-                    Debug.Log("First " + side);
+                    // Debug.Log("First " + side);
                     next.RemoveWall(side.GetOpposite());
-                    Debug.Log("Second " + side);
+                    // Debug.Log("Second " + side);
                     // визуализация
                     listener?.OnWallRemoved(cell, side);
 

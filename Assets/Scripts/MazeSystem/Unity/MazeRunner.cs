@@ -4,11 +4,11 @@ namespace MazeSystem.Unity
 {
     public class MazeRunner : MonoBehaviour
     {
-        [SerializeField] private MazeRenderer mazeRenderer;
+        [SerializeField] private MazeManager mazeManager;
 
         private void Start()
         {
-            mazeRenderer.Build();
+            mazeManager.GenerateMaze();
         }
     }
 }

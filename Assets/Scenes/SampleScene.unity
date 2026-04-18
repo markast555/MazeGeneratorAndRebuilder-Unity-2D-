@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 25837699}
   - component: {fileID: 25837698}
   - component: {fileID: 25837701}
+  - component: {fileID: 25837702}
   m_Layer: 0
   m_Name: Maze
   m_TagString: Untagged
@@ -196,16 +197,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7ce51d792d45898492bd371b1c3db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configProvider: {fileID: 25837699}
   floorPrefab: {fileID: 5342985144046007392, guid: 063eef645758a484ba18e8eb2e94bb36, type: 3}
   wallPrefab: {fileID: 3989160804489926345, guid: 1319dae128ddd0f44986ca3e056c4216, type: 3}
   cellSize: 1
   wallThickness: 0.1
   wallLength: 1.1
-  buildMode: 0
-  buildDelay: 0.1
-  generationMode: 1
-  generationDelay: 0.1
+--- !u!114 &25837702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25837697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8871b7006b404d55afde946413cb6c05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configProvider: {fileID: 25837699}
+  rendererMaze: {fileID: 25837701}
+  generationDelay: 3
 --- !u!1 &127960418
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 127960419}
   - component: {fileID: 127960421}
+  - component: {fileID: 127960422}
   m_Layer: 0
   m_Name: MazeSystem
   m_TagString: Untagged
@@ -250,7 +262,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b75a796b6764c9f8b63e4f9a78c1380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeRenderer: {fileID: 25837701}
+  mazeManager: {fileID: 127960422}
+--- !u!114 &127960422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127960418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a142c7b854c455aab3e2c2c038a4031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 25837702}
+  generationMode: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
