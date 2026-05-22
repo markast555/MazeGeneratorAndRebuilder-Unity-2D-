@@ -1,12 +1,12 @@
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Строитель лабиринта
+    /// Создаёт структуру лабиринта
     /// </summary>
     public static class MazeBuilder
     {
         /// <summary>
-        /// Инициализирует ячейки лабиринта и связывает их между собой.
+        /// Инициализирует ячейки лабиринта и связывает их между собой
         /// </summary>
         /// <param name="maze">Лабиринт</param>
         public static void InitMaze(Maze maze)
@@ -16,7 +16,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Создаёт ячейки лабиринта.
+        /// Создаёт ячейки лабиринта
         /// </summary>
         /// <param name="maze">Лабиринт</param>
         private static void CreateCells(Maze maze)
@@ -33,7 +33,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Устанавливает соседние связи между ячейками.
+        /// Устанавливает соседние связи между ячейками
         /// </summary>
         /// <param name="maze">Лабиринт</param>
         private static void LinkNeighbors(Maze maze)

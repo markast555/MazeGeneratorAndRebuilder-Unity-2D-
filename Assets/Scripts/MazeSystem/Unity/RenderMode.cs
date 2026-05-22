@@ -1,7 +1,7 @@
 namespace MazeSystem.Unity
 {
     /// <summary>
-    /// Режим отображения лабиринта
+    /// Режимы отображения лабиринта
     /// </summary>
     public enum RenderMode
     {

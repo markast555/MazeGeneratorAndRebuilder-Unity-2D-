@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using MazeSystem.Core;
-using UnityEngine.Serialization;
 
 namespace MazeSystem.Unity
 {
@@ -12,14 +11,6 @@ namespace MazeSystem.Unity
     /// </summary>
     public class MazeConfigProvider : MonoBehaviour
     {
-        // Размер сетки
-        // public int tilemapRows = MazeSettings.DefaultTilemapRows;
-        // public int tilemapCols = MazeSettings.DefaultTilemapCols;
-        //
-        // // Начальная позиция лабиринта на сетке
-        // public int mazeStartRow = MazeSettings.DefaultMazeStartRow;
-        // public int mazeStartCol = MazeSettings.DefaultMazeStartCol;
-
         // Размер лабиринта
         public int mazeRows = MazeSettings.DefaultMazeRows;
         public int mazeCols = MazeSettings.DefaultMazeCols;
@@ -35,22 +26,28 @@ namespace MazeSystem.Unity
         public int dynamicSafeZoneDistance = DynamicSafeZoneSettings.DefaultDistance;
 
         /// <summary>
-        /// Создаёт объект настроек лабиринта на основе значений из Inspector.
+        /// Создаёт объект настроек лабиринта на основе значений из Inspector
         /// </summary>
-        /// <returns>Экземпляр <see cref="MazeSettings"/> с валидированными параметрами.</returns>
+        /// <returns>
+        /// Экземпляр <see cref="MazeSettings"/> с валидированными параметрами
+        /// </returns>
         public MazeSettings GetMazeSettings()
         {
             return new MazeSettings(
-                // tilemapRows,
-                // tilemapCols,
                 mazeRows,
                 mazeCols
-                // mazeStartRow,
-                // mazeStartCol,
-                // safeZoneSquareRadius
             );
         }
 
+        /// <summary>
+        /// Создаёт объект настроек безопасной зоны на основе значений из Inspector 
+        /// </summary>
+        /// <returns>
+        /// Экземпляр <see cref="ISafeZoneSettings"/> с валидированными параметрами
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Передан неподдерживаемый режим формирования безопасной зоны
+        /// </exception>
         public ISafeZoneSettings GetSafeZoneSettings()
         {
             switch (safeZoneMode)
@@ -64,10 +61,20 @@ namespace MazeSystem.Unity
                         dynamicSafeZoneDistance, mazeRows, mazeCols);
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(
+                        nameof(safeZoneMode), 
+                        safeZoneMode, 
+                        "Unsupported SafeZoneMode value");
             }
         }
         
+        /// <summary>
+        /// Создаёт объект настроек лабиринта и безопасной зоны
+        /// на основе значений из Inspector
+        /// </summary>
+        /// <returns>
+        /// Экземпляр <see cref="MazeConfig"/> с валидированными параметрами
+        /// </returns>
         public MazeConfig GetMazeConfig()
         {
             return new MazeConfig(
@@ -80,25 +87,6 @@ namespace MazeSystem.Unity
         /// </summary>
         public void OnValidate()
         {
-            // tilemapRows = Mathf.Clamp(
-            //     tilemapRows, MazeSettings.MinTilemapRows, 
-            //     MazeSettings.MaxTilemapRows);
-            //
-            // tilemapCols = Mathf.Clamp(
-            //     tilemapCols, 
-            //     MazeSettings.MinTilemapCols, 
-            //     MazeSettings.MaxTilemapCols);
-            //
-            // mazeStartRow = Mathf.Clamp(
-            //     mazeStartRow,
-            //     MazeSettings.MinMazeStartRow,
-            //     tilemapRows -  MazeSettings.MinMazeRows);
-            //
-            // mazeStartCol = Mathf.Clamp(
-            //     mazeStartCol,
-            //     MazeSettings.MinMazeStartCol,
-            //     tilemapCols -  MazeSettings.MinMazeCols);
-            
             mazeRows = Mathf.Clamp(
                 mazeRows, 
                 MazeSettings.MinMazeRows, 
@@ -136,14 +124,14 @@ namespace MazeSystem.Unity
                 maxAllowedDistance);
         }
         
+        /// <summary>
+        /// Ставит значения по умолчанию в Inspector 
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Передан неподдерживаемый режим формирования безопасной зоны
+        /// </exception>
         public void ResetToDefault()
         {
-            // tilemapRows = MazeSettings.DefaultTilemapRows;
-            // tilemapCols = MazeSettings.DefaultTilemapCols;
-            //
-            // mazeStartRow = MazeSettings.DefaultMazeStartRow;
-            // mazeStartCol = MazeSettings.DefaultMazeStartCol;
-
             mazeRows = MazeSettings.DefaultMazeRows;
             mazeCols = MazeSettings.DefaultMazeCols;
 
@@ -158,7 +146,10 @@ namespace MazeSystem.Unity
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(
+                        nameof(safeZoneMode), 
+                        safeZoneMode, 
+                        "Unsupported SafeZoneMode value");
             }
             
         }

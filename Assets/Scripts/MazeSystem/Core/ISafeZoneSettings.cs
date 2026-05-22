@@ -1,7 +1,7 @@
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Интерфейс для безопасной зоны
+    /// Определяет настройки безопасной зоны
     /// </summary>
     public interface ISafeZoneSettings
     {

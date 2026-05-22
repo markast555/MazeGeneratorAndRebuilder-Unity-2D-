@@ -3,15 +3,18 @@ using System;
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Класс по работе с BorderSide.
+    /// Методы-расширения для BorderSide
     /// </summary>
     public static class BorderSideExtensions
     {
         /// <summary>
-        /// Получает противоположную сторону указанной границы.
+        /// Возвращает противоположную сторону
         /// </summary>
         /// <param name="side">Сторона ячейки</param>
         /// <returns>Сторона ячейки</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Передан неподдерживаемый тип стороны
+        /// </exception>
         public static BorderSide GetOpposite(this BorderSide side)
         {
             return side switch
@@ -21,7 +24,7 @@ namespace MazeSystem.Core
                 BorderSide.Left => BorderSide.Right,
                 BorderSide.Right => BorderSide.Left,
                 _ => throw new ArgumentOutOfRangeException(
-                    nameof(side), side, "Invalid border side")
+                    nameof(side), side, "Unsupported BorderSide value")
             };
         }
     }

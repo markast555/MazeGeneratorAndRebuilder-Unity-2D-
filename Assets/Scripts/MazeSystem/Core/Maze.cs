@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Класс лабиринта.
+    /// Лабиринт
     /// </summary>
     public class Maze
     {
@@ -17,7 +17,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Получает ячейку.
+        /// Возвращает ячейку по указанным координатам
         /// </summary>
         /// <param name="row">Строка</param>
         /// <param name="col">Столбец</param>
@@ -28,7 +28,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Устанавливает ячейку.
+        /// Устанавливает ячейку по указанным координатам
         /// </summary>
         /// <param name="row">Строка</param>
         /// <param name="col">Столбец</param>
@@ -39,7 +39,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Возвращает последовательность всех ячеек лабиринта.
+        /// Возвращает последовательность всех ячеек лабиринта
         /// </summary>
         /// <returns>Последовательность ячеек</returns>
         public IEnumerable<Cell> AllCells()

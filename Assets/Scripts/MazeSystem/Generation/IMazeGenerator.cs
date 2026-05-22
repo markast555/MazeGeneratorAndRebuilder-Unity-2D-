@@ -4,28 +4,24 @@ using MazeSystem.Core;
 namespace MazeSystem.Generation
 {
     /// <summary>
-    /// Интерфейс генератора лабиринта
+    /// Определяет функциональность генератора лабиринта
     /// </summary>
     public interface IMazeGenerator
     {
         /// <summary>
-        /// Генерирует лабиринт
+        /// Формирует структуру лабиринта
         /// </summary>
-        /// <param name="maze">Модель лабиринта</param>
-        /// <param name="listener">
-        /// Слушатель событий генерации (опционально, для визуализации)
-        /// </param>
+        /// <param name="maze">Лабиринт</param>
+        /// <param name="listener">Слушатель событий генерации</param>
         void Generate(Maze maze, IMazeGeneratorListener listener = null);
         
         /// <summary>
-        /// Генерирует лабиринт с паузами
+        /// Формирует структуру лабиринта пошагово
         /// </summary>
-        /// <param name="maze">Модель лабиринта</param>
-        /// <param name="listener">
-        /// Слушатель событий генерации (опционально, для визуализации)
-        /// </param>
-        /// <param name="delay">Время паузы в секундах</param>
-        /// <returns></returns>
+        /// <param name="maze">Лабиринт</param>
+        /// <param name="listener">Слушатель событий генерации</param>
+        /// <param name="delay">Время задержки между шагами</param>
+        /// <returns>Enumerator для пошаговой генерации</returns>
         IEnumerator GenerateAnimated(Maze maze, IMazeGeneratorListener listener, float delay);
     }
 }

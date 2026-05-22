@@ -1,5 +1,8 @@
 namespace MazeSystem.Core
 {
+    /// <summary>
+    /// Конфигурация лабиринта и безопасной зоны
+    /// </summary>
     public class MazeConfig
     {
         public MazeSettings Maze { get; }

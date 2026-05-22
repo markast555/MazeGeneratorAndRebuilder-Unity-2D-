@@ -3,25 +3,37 @@ using System;
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Класс значений для настроек квадратной безопасной зоны
+    /// Настройки квадратной безопасной зоны
     /// </summary>
     public class SquareSafeZoneSettings: ISafeZoneSettings
     {
         public SafeZoneMode Mode => SafeZoneMode.Square;
         
-        // Радиус безопасной зоны (квадрат)
+        /// <summary>
+        /// Радиус безопасной зоны в ячейках (клетках)
+        /// </summary>
         public int Radius { get; }
         
         // Минимальное и максимальное значения радиуса безопасной зоны
         public const int MinRadius = 1;
         public const int MaxRadius = 10;
         
-        // Радиус безопасной зоны (квадрат) по умолчанию
+        // Радиус безопасной зоны по умолчанию
         public const int DefaultRadius = 2;
         
-        // Коэффициент для определения радиуса безопасной зоны
+        // Коэффициент масштабирования безопасной зоны
         public const float RadiusFactor = 0.2f;
 
+        /// <summary>
+        /// Создаёт настройки квадратной безопасной зоны
+        /// </summary>
+        /// <param name="radius">Радиус безопасной зоны</param>
+        /// <param name="mazeRows">Количество строк в лабиринте</param>
+        /// <param name="mazeCols">Количество столбцов в лабиринте</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Выбрано значение радиуса, которое не помещается в размеры лабиринта
+        /// или выходит за допустимые границы
+        /// </exception>
         public SquareSafeZoneSettings(
             int radius,
             int mazeRows,
@@ -37,7 +49,7 @@ namespace MazeSystem.Core
             );
             
             if (radius > maxAllowedRadius || radius < MinRadius)
-                throw new ArgumentOutOfRangeException(nameof(radius),
+                throw new ArgumentOutOfRangeException(nameof(radius), radius,
                     $"Expected {MinRadius} <= Radius <= {maxAllowedRadius} " +
                     "(safe zone must fit inside the maze and not occupy the entire area)");
             

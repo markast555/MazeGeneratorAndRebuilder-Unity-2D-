@@ -3,15 +3,21 @@ using System.Collections.Generic;
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Класс ячейки лабиринта.
+    /// Ячейка лабиринта
     /// </summary>
     public class Cell
     {
         public int Row { get; }
         public int Col { get; }
 
+        /// <summary>
+        /// Стены текущей ячейки
+        /// </summary>
         public BorderSide Walls { get; private set; } = BorderSide.None;
 
+        /// <summary>
+        /// Соседние ячейки по сторонам
+        /// </summary>
         public Dictionary<BorderSide, Cell> Neighbors { get; } = new();
 
         public Cell(int row, int col)
@@ -31,7 +37,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Добавляет стену с указанной стороны.
+        /// Добавляет стену с указанной стороны
         /// </summary>
         /// <param name="side">Сторона ячейки</param>
         public void AddWall(BorderSide side)
@@ -40,7 +46,7 @@ namespace MazeSystem.Core
         }
 
         /// <summary>
-        /// Удаляет стену с указанной стороны.
+        /// Удаляет стену с указанной стороны
         /// </summary>
         /// <param name="side">Сторона ячейки</param>
         public void RemoveWall(BorderSide side)

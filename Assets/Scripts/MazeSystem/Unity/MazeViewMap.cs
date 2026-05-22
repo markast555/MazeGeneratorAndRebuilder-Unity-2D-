@@ -4,39 +4,42 @@ using MazeSystem.Core;
 namespace MazeSystem.Unity
 {
     /// <summary>
-    /// Класс-словарь для сопоставления
-    /// логической ячейки с её визуальным представлением
+    /// Хранит соответствие логических ячеек
+    /// их визуальным представлениям
     /// </summary>
     public class MazeViewMap
     {
-        private Dictionary<Cell, CellViewData> _view = new();
+        private Dictionary<Cell, CellViewData> _cellViews = new();
 
         /// <summary>
-        /// Связывает логической ячейки с её визуальным представлением
+        /// Связывает логическую ячейку
+        /// с её визуальным представлением
         /// </summary>
         /// <param name="cell">Ячейка</param>
-        /// <param name="viewData">Визуальное представление ячейки</param>
+        /// <param name="viewData">
+        /// Визуальное представление ячейки
+        /// </param>
         public void Add(Cell cell, CellViewData viewData)
         {
-            _view[cell] = viewData;
+            _cellViews[cell] = viewData;
         }
 
         /// <summary>
-        /// Получает визуальные данные ячейки
+        /// Возвращает визуальное представление ячейки
         /// </summary>
         /// <param name="cell">Ячейка</param>
         /// <returns>Визуальное представление ячейки</returns>
         public CellViewData Get(Cell cell)
         {
-            return _view[cell];
+            return _cellViews[cell];
         }
 
         /// <summary>
-        /// Очищает словарь
+        /// Очищает данные визуальных представлений
         /// </summary>
         public void Clear()
         {
-            _view.Clear();
+            _cellViews.Clear();
         }
     }
 }

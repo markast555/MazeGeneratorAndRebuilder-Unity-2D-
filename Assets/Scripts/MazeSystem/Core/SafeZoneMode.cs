@@ -1,7 +1,7 @@
 namespace MazeSystem.Core
 {
     /// <summary>
-    /// Режим безопасной зоны
+    /// Режимы формирования безопасной зоны
     /// </summary>
     public enum SafeZoneMode
     {

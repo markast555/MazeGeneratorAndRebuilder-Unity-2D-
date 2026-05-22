@@ -23,43 +23,6 @@ namespace MazeSystem.Editor
             // Синхронизация serializedObject с текущими данными объекта
             serializedObject.Update();
             
-            // ===== Tilemap =====
-            // EditorGUILayout.LabelField("Tilemap", EditorStyles.boldLabel);
-            // DrawIntField("tilemapRows", "Rows",
-            //     MazeSettings.MinTilemapRows,
-            //     MazeSettings.MaxTilemapRows,
-            //     MazeSettings.DefaultTilemapRows);
-            //
-            // DrawIntField("tilemapCols", "Cols",
-            //     MazeSettings.MinTilemapCols,
-            //     MazeSettings.MaxTilemapCols,
-            //     MazeSettings.DefaultTilemapCols);
-
-            // EditorGUILayout.Space();
-
-            // Получение текущих значений для зависимых ограничений
-            // int tilemapRows = GetInt("tilemapRows");
-            // int tilemapCols = GetInt("tilemapCols");
-
-            // ===== Maze Start Position =====
-            // EditorGUILayout.LabelField("Maze Start Position", EditorStyles.boldLabel);
-            // DrawIntField("mazeStartRow", "Start Row",
-            //     MazeSettings.MinMazeStartRow,
-            //     tilemapRows - MazeSettings.MinMazeRows,
-            //     MazeSettings.DefaultMazeStartRow);
-            //
-            // DrawIntField("mazeStartCol", "Start Col",
-            //     MazeSettings.MinMazeStartCol,
-            //     tilemapCols - MazeSettings.MinMazeCols,
-            //     MazeSettings.DefaultMazeStartCol);
-            //
-            // EditorGUILayout.Space();
-
-            // Получение текущих значений для зависимых ограничений
-            // int mazeStartRow = GetInt("mazeStartRow");
-            // int mazeStartCol = GetInt("mazeStartCol");
-
-            
             // ===== Maze Size =====
             EditorGUILayout.LabelField("Maze Size", EditorStyles.boldLabel);
             DrawIntField("mazeRows", "Maze Rows",
@@ -130,10 +93,6 @@ namespace MazeSystem.Editor
             
             // Проверка, равны ли все значения значениям по умолчанию
             bool isAllDefault =
-                // GetInt("tilemapRows") == MazeSettings.DefaultTilemapRows &&
-                // GetInt("tilemapCols") == MazeSettings.DefaultTilemapCols &&
-                // GetInt("mazeStartRow") == MazeSettings.DefaultMazeStartRow &&
-                // GetInt("mazeStartCol") == MazeSettings.DefaultMazeStartCol &&
                 GetInt("mazeRows") == MazeSettings.DefaultMazeRows &&
                 GetInt("mazeCols") == MazeSettings.DefaultMazeCols &&
                 (

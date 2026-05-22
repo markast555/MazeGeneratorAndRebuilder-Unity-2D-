@@ -7,6 +7,8 @@ UserSettings/
 
 obj/
 bin/
+CodeCoverage/
+DebugScreens/
 
 *.csproj
 *.unityproj

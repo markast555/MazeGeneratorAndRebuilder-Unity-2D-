@@ -129,9 +129,9 @@ GameObject:
   m_Component:
   - component: {fileID: 25837700}
   - component: {fileID: 25837699}
-  - component: {fileID: 25837698}
   - component: {fileID: 25837701}
   - component: {fileID: 25837702}
+  - component: {fileID: 25837698}
   m_Layer: 0
   m_Name: Maze
   m_TagString: Untagged
@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa50079d4dab4f4c958b1aba0d56bb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configProvider: {fileID: 25837699}
-  rendererMaze: {fileID: 25837701}
+  mazeConfigProvider: {fileID: 25837699}
+  mazeRenderer: {fileID: 25837701}
 --- !u!114 &25837699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bc79a46b884a45b7aab8edca0a6dff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeRows: 5
-  mazeCols: 5
+  mazeRows: 10
+  mazeCols: 10
   safeZoneMode: 1
   squareSafeZoneRadius: 1
   dynamicSafeZoneDistance: 3
@@ -179,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 25837697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.76, y: -3.45, z: 0}
+  m_LocalPosition: {x: -5, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -214,9 +214,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8871b7006b404d55afde946413cb6c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configProvider: {fileID: 25837699}
-  rendererMaze: {fileID: 25837701}
-  generationDelay: 3
+  mazeConfigProvider: {fileID: 25837699}
+  mazeRenderer: {fileID: 25837701}
+  delay: 0.1
 --- !u!1 &127960418
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +228,8 @@ GameObject:
   - component: {fileID: 127960419}
   - component: {fileID: 127960421}
   - component: {fileID: 127960422}
+  - component: {fileID: 127960423}
+  - component: {fileID: 127960424}
   m_Layer: 0
   m_Name: MazeSystem
   m_TagString: Untagged
@@ -263,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mazeManager: {fileID: 127960422}
+  scenario: 1
 --- !u!114 &127960422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,8 +278,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a142c7b854c455aab3e2c2c038a4031, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 25837702}
-  generationMode: 0
+  mazeController: {fileID: 25837702}
+  positionProvider: {fileID: 127960423}
+  debugConfig: {fileID: 127960424}
+  renderMode: 0
+  regenerationInterval: 3
+--- !u!114 &127960423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127960418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0dd56edf55947468ad349e575d48913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: -5
+  max: 5
+--- !u!114 &127960424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127960418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954d0aa4c5754d6cbb77ca5e94d843cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  categories: 64
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +762,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.0460961, b: 0, a: 1}
+  m_Color: {r: 0.8470589, g: 0.7490196, b: 0.8470589, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -747,7 +781,7 @@ Transform:
   m_GameObject: {fileID: 2112176314}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 18, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
