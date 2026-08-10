@@ -1,6 +1,6 @@
 # Maze Generator & Rebuilder 2D
 
-The project was completed for the bachelor's final qualifying work.
+The project was carried out as a prototype for a bachelor's degree thesis.
 
 Program:
 - Generates a 2D maze with preset parameters using the Growing Tree algorithm. The generation can be run step by step, observing the action of the algorithm. 
